@@ -72,7 +72,7 @@ export function Contact() {
                 <div className="space-y-6">
                   {/* Email */}
                   <motion.a
-                    href="mailto:tuemail@ejemplo.com"
+                    href="mailto:jcg.software.solution@gmail.com"
                     className="flex items-center gap-4 glass p-4 rounded-lg hover:border-primary/50 transition-all group"
                     whileHover={{ scale: 1.02, x: 5 }}
                   >
@@ -81,13 +81,13 @@ export function Contact() {
                     </div>
                     <div>
                       <div className="font-semibold">Email</div>
-                      <div className="text-sm text-muted-foreground">tuemail@ejemplo.com</div>
+                      <div className="text-sm text-muted-foreground">jcg.software.solution@gmail.com</div>
                     </div>
                   </motion.a>
 
                   {/* Phone */}
                   <motion.a
-                    href="tel:+1234567890"
+                    href="tel:+59897479212"
                     className="flex items-center gap-4 glass p-4 rounded-lg hover:border-primary/50 transition-all group"
                     whileHover={{ scale: 1.02, x: 5 }}
                   >
@@ -96,7 +96,7 @@ export function Contact() {
                     </div>
                     <div>
                       <div className="font-semibold">Teléfono</div>
-                      <div className="text-sm text-muted-foreground">+1 (234) 567-890</div>
+                      <div className="text-sm text-muted-foreground">+598 97479212</div>
                     </div>
                   </motion.a>
 
@@ -113,31 +113,6 @@ export function Contact() {
                       <div className="text-sm text-muted-foreground">Remote / Worldwide</div>
                     </div>
                   </motion.div>
-                </div>
-              </div>
-
-              {/* Social Links */}
-              <div>
-                <h3 className="text-xl font-bold mb-4">Sígueme en</h3>
-                <div className="flex gap-4">
-                  {[
-                    { icon: Github, href: "https://github.com/tuusuario", label: "GitHub" },
-                    { icon: Linkedin, href: "https://linkedin.com/in/tuusuario", label: "LinkedIn" },
-                    { icon: Twitter, href: "https://twitter.com/tuusuario", label: "Twitter" },
-                  ].map((social, index) => (
-                    <motion.a
-                      key={index}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-12 h-12 glass rounded-full flex items-center justify-center hover:border-primary/50 transition-all"
-                      whileHover={{ scale: 1.1, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                      aria-label={social.label}
-                    >
-                      <social.icon className="w-5 h-5" />
-                    </motion.a>
-                  ))}
                 </div>
               </div>
 
