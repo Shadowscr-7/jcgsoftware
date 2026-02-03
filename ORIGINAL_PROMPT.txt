@@ -1,0 +1,29 @@
+PROMPT ORIGINAL - 20 Enero 2026
+=====================================
+
+aqui en esta carpeta, quiero crear un proyecto next, rect, con las mas nuevas tecnologías, librerías, y demás que haya hoy en día en la red para armar una web tipo profile / portfolio, es decir para hacerme a conocer por mi cv, mis estudios, experiencia y tener un apartado de portfolio o proyectos o algo asi donde pueda exponer todo lo que he hecho para poder ofrecerme a empresas.. 
+
+quiero que sea super profesional, lo mas visual, animada y moderna posible, utilizando colores llamativos pero no haciendolo un arcoiris.. pero si enfocado en un estilo mas Dark que light... 
+
+todos mis proyectos son aplicaciones ya sea web o mobil (soy desarrollador hace 14 años) con muchisima experiencia en diferentes tecnologías ya sea frontend, backend, incluso servicios de asistencia en cuanto a armado de pcs por decirlo de una forma sencilla, y creador de agentes automatizadores, tambien enfocado y centralizado a lo que es la inteligencia artificial hoy en día y un sector de publicidad utilizando las herramientas de meta de forma profesional... 
+
+puedes armar todo un esquema de armado de todo este proyecto ambiocioso web sobre mi, en un archivo y seguir luego paso a paso para crear el proyecto desde 0 y todo el sitio web como te lo he especificado? y guardar este prompt para no olvidarnos?
+
+PERFIL DEL DESARROLLADOR:
+- 14+ años de experiencia
+- Desarrollo Full Stack (Frontend & Backend)
+- Aplicaciones Web & Mobile
+- Soporte técnico / Armado de PCs
+- Creador de agentes automatizadores
+- Especialista en Inteligencia Artificial
+- Profesional en publicidad con herramientas de Meta
+
+REQUISITOS DEL PROYECTO:
+✅ Next.js + React
+✅ Tecnologías más modernas de 2026
+✅ Super profesional
+✅ Altamente visual y animado
+✅ Tema Dark predominante
+✅ Colores llamativos pero elegantes
+✅ Secciones: CV, estudios, experiencia, portfolio
+✅ Objetivo: Presentarse profesionalmente a empresas
