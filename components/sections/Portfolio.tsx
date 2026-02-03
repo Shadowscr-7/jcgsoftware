@@ -306,7 +306,7 @@ export function Portfolio() {
               <div className="text-sm text-muted-foreground">Valor Generado</div>
             </div>
             <div className="glass p-6 rounded-lg text-center">
-              <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">500k+</div>
+              <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">100k+</div>
               <div className="text-sm text-muted-foreground">Usuarios Activos</div>
             </div>
           </div>

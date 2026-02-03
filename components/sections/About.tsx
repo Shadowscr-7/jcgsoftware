@@ -94,11 +94,11 @@ export function About() {
                   <div className="text-sm text-muted-foreground">Años de experiencia</div>
                 </div>
                 <div className="glass px-6 py-4 rounded-lg">
-                  <div className="text-3xl font-bold gradient-text">100+</div>
+                  <div className="text-3xl font-bold gradient-text">50+</div>
                   <div className="text-sm text-muted-foreground">Proyectos completados</div>
                 </div>
                 <div className="glass px-6 py-4 rounded-lg">
-                  <div className="text-3xl font-bold gradient-text">50+</div>
+                  <div className="text-3xl font-bold gradient-text">25+</div>
                   <div className="text-sm text-muted-foreground">Clientes satisfechos</div>
                 </div>
               </div>
