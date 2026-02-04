@@ -2,9 +2,22 @@
 
 import { motion } from "framer-motion";
 import { Heart, ArrowUp } from "lucide-react";
-import { NAV_LINKS } from "@/lib/constants";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { getTranslation } from "@/lib/translations";
 
 export function Footer() {
+  const { language } = useLanguage();
+
+  const NAV_LINKS = [
+    { href: "#hero", label: getTranslation(language, "nav.home") },
+    { href: "#about", label: getTranslation(language, "nav.about") },
+    { href: "#experience", label: getTranslation(language, "nav.experience") },
+    { href: "#skills", label: getTranslation(language, "nav.skills") },
+    { href: "#portfolio", label: getTranslation(language, "nav.portfolio") },
+    { href: "#services", label: getTranslation(language, "nav.services") },
+    { href: "#contact", label: getTranslation(language, "nav.contact") },
+  ];
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -27,9 +40,9 @@ export function Footer() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Brand */}
             <div className="space-y-4">
-              <h3 className="text-2xl font-bold gradient-text">&lt;DEV/&gt;</h3>
+              <h3 className="text-2xl font-bold gradient-text">{getTranslation(language, "footer.brand")}</h3>
               <p className="text-sm text-muted-foreground">
-                Desarrollador Full Stack con 14+ años de experiencia creando soluciones digitales innovadoras.
+                {getTranslation(language, "footer.description")}
               </p>
               <div className="flex gap-4">
                 {[
@@ -56,7 +69,7 @@ export function Footer() {
 
             {/* Quick Links */}
             <div>
-              <h4 className="font-semibold mb-4">Navegación</h4>
+              <h4 className="font-semibold mb-4">{getTranslation(language, "footer.navigation")}</h4>
               <ul className="space-y-2">
                 {NAV_LINKS.map((link) => (
                   <li key={link.href}>
@@ -77,20 +90,20 @@ export function Footer() {
 
             {/* Services */}
             <div>
-              <h4 className="font-semibold mb-4">Servicios</h4>
+              <h4 className="font-semibold mb-4">{getTranslation(language, "footer.services")}</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>Desarrollo Web</li>
-                <li>Desarrollo Mobile</li>
-                <li>Inteligencia Artificial</li>
-                <li>Automatización</li>
-                <li>Marketing Digital</li>
-                <li>Consultoría</li>
+                <li>{getTranslation(language, "footer.servicesLinks.web")}</li>
+                <li>{getTranslation(language, "footer.servicesLinks.mobile")}</li>
+                <li>{getTranslation(language, "footer.servicesLinks.ai")}</li>
+                <li>{getTranslation(language, "footer.servicesLinks.automation")}</li>
+                <li>{getTranslation(language, "footer.servicesLinks.marketing")}</li>
+                <li>{getTranslation(language, "footer.servicesLinks.consulting")}</li>
               </ul>
             </div>
 
             {/* Contact */}
             <div>
-              <h4 className="font-semibold mb-4">Contacto</h4>
+              <h4 className="font-semibold mb-4">{getTranslation(language, "footer.contact")}</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
                   <a href="mailto:tuemail@ejemplo.com" className="hover:text-primary transition-colors">
@@ -106,7 +119,7 @@ export function Footer() {
                 <li className="pt-2">
                   <span className="inline-flex items-center gap-2 text-[#00FF88]">
                     <span className="w-2 h-2 bg-[#00FF88] rounded-full animate-pulse" />
-                    Disponible para proyectos
+                    {getTranslation(language, "footer.availability")}
                   </span>
                 </li>
               </ul>
@@ -118,18 +131,18 @@ export function Footer() {
         <div className="border-t border-border py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground text-center md:text-left">
-              © {new Date().getFullYear()} Portfolio. Hecho con{" "}
-              <Heart className="inline w-4 h-4 text-accent" /> usando las últimas tecnologías.
+              © {new Date().getFullYear()} Portfolio. {getTranslation(language, "footer.madeWith")}{" "}
+              <Heart className="inline w-4 h-4 text-accent" /> {getTranslation(language, "footer.using")}
             </p>
             <div className="flex gap-6 text-sm text-muted-foreground">
               <a href="#" className="hover:text-primary transition-colors">
-                Privacidad
+                {getTranslation(language, "footer.privacy")}
               </a>
               <a href="#" className="hover:text-primary transition-colors">
-                Términos
+                {getTranslation(language, "footer.terms")}
               </a>
               <a href="#" className="hover:text-primary transition-colors">
-                Cookies
+                {getTranslation(language, "footer.cookies")}
               </a>
             </div>
           </div>

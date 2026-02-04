@@ -9,7 +9,7 @@ const openai = new OpenAI({
 
 export async function POST(req: NextRequest) {
   try {
-    const { messages } = await req.json();
+    const { messages, language = "es" } = await req.json();
 
     if (!process.env.OPENAI_API_KEY) {
       return NextResponse.json(
@@ -18,9 +18,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Agregar el prompt del sistema al inicio
+    // Language instruction
+    const languageInstruction = language === "es" 
+      ? "IMPORTANTE: Responde SIEMPRE en ESPAÑOL. El usuario habla español."
+      : "IMPORTANT: ALWAYS respond in ENGLISH. The user speaks English.";
+
+    // Agregar el prompt del sistema al inicio con instrucción de idioma
     const messagesWithSystem = [
-      { role: "system", content: CHAT_SYSTEM_PROMPT },
+      { role: "system", content: `${languageInstruction}\n\n${CHAT_SYSTEM_PROMPT}` },
       ...messages,
     ];
 

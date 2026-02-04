@@ -9,10 +9,12 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { projects, getFeaturedProjects } from "@/lib/data/projects";
-import { PROJECT_CATEGORIES } from "@/lib/constants";
 import type { Project } from "@/types";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { getTranslation } from "@/lib/translations";
 
 export function Portfolio() {
+  const { language } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<Project["category"] | "all">("all");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
@@ -42,10 +44,10 @@ export function Portfolio() {
         <FadeIn>
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Portfolio & <span className="gradient-text">Proyectos</span>
+              {getTranslation(language, "portfolio.title").split(" ")[0]} & <span className="gradient-text">{getTranslation(language, "portfolio.title").split(" ").slice(1).join(" ")}</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Soluciones innovadoras que generan impacto real
+              {getTranslation(language, "portfolio.subtitle")}
             </p>
           </div>
         </FadeIn>
@@ -65,7 +67,10 @@ export function Portfolio() {
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {category === "all" ? "Todos" : PROJECT_CATEGORIES[category]}
+                {category === "all" 
+                  ? getTranslation(language, "portfolio.categories.all")
+                  : getTranslation(language, `portfolio.categories.${category}`)
+                }
               </motion.button>
             ))}
           </div>
@@ -106,7 +111,7 @@ export function Portfolio() {
                     </div>
                     {project.featured && (
                       <Badge className="absolute top-4 right-4 bg-gradient-to-r from-primary to-secondary text-background">
-                        Destacado
+                        {language === "es" ? "Destacado" : "Featured"}
                       </Badge>
                     )}
                   </div>
@@ -123,13 +128,13 @@ export function Portfolio() {
                     </div>
 
                     <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                      {project.description}
+                      {getTranslation(language, `portfolio.projects.${project.id}.description`)}
                     </p>
 
                     {project.impact && (
                       <div className="mb-4 p-3 glass rounded-lg border border-primary/20">
-                        <p className="text-xs font-semibold text-primary mb-1">Impacto</p>
-                        <p className="text-sm">{project.impact}</p>
+                        <p className="text-xs font-semibold text-primary mb-1">{language === "es" ? "Impacto" : "Impact"}</p>
+                        <p className="text-sm">{getTranslation(language, `portfolio.projects.${project.id}.impact`)}</p>
                       </div>
                     )}
 
@@ -179,7 +184,7 @@ export function Portfolio() {
                       )}
                       {!project.demoUrl && !project.githubUrl && (
                         <Button size="sm" variant="outline" className="flex-1">
-                          Ver detalles
+                          {language === "es" ? "Ver detalles" : "View details"}
                         </Button>
                       )}
                     </div>
@@ -232,23 +237,23 @@ export function Portfolio() {
 
                   {/* Description */}
                   <div>
-                    <h3 className="text-lg font-semibold mb-2">Descripción</h3>
+                    <h3 className="text-lg font-semibold mb-2">{language === "es" ? "Descripción" : "Description"}</h3>
                     <p className="text-muted-foreground">
-                      {selectedProject.longDescription || selectedProject.description}
+                      {getTranslation(language, `portfolio.projects.${selectedProject.id}.longDescription`)}
                     </p>
                   </div>
 
                   {/* Impact */}
                   {selectedProject.impact && (
                     <div className="p-4 glass rounded-lg border border-primary/20">
-                      <h3 className="text-lg font-semibold text-primary mb-2">Impacto</h3>
-                      <p>{selectedProject.impact}</p>
+                      <h3 className="text-lg font-semibold text-primary mb-2">{language === "es" ? "Impacto" : "Impact"}</h3>
+                      <p>{getTranslation(language, `portfolio.projects.${selectedProject.id}.impact`)}</p>
                     </div>
                   )}
 
                   {/* Technologies */}
                   <div>
-                    <h3 className="text-lg font-semibold mb-3">Tecnologías Utilizadas</h3>
+                    <h3 className="text-lg font-semibold mb-3">{language === "es" ? "Tecnologías Utilizadas" : "Technologies Used"}</h3>
                     <div className="flex flex-wrap gap-2">
                       {selectedProject.tags.map((tag, i) => (
                         <Badge key={i} variant="outline">
@@ -266,7 +271,7 @@ export function Portfolio() {
                         onClick={() => window.open(selectedProject.demoUrl, "_blank")}
                       >
                         <ExternalLink className="w-4 h-4 mr-2" />
-                        Ver Demo
+                        {language === "es" ? "Ver Demo" : "View Demo"}
                       </Button>
                     )}
                     {selectedProject.githubUrl && (
@@ -276,7 +281,7 @@ export function Portfolio() {
                         onClick={() => window.open(selectedProject.githubUrl, "_blank")}
                       >
                         <Github className="w-4 h-4 mr-2" />
-                        Ver Código
+                        {language === "es" ? "Ver Código" : "View Code"}
                       </Button>
                     )}
                   </div>
@@ -293,21 +298,21 @@ export function Portfolio() {
               <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">
                 {projects.length}
               </div>
-              <div className="text-sm text-muted-foreground">Proyectos Totales</div>
+              <div className="text-sm text-muted-foreground">{language === "es" ? "Proyectos Totales" : "Total Projects"}</div>
             </div>
             <div className="glass p-6 rounded-lg text-center">
               <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">
                 {getFeaturedProjects().length}
               </div>
-              <div className="text-sm text-muted-foreground">Destacados</div>
+              <div className="text-sm text-muted-foreground">{language === "es" ? "Destacados" : "Featured"}</div>
             </div>
             <div className="glass p-6 rounded-lg text-center">
               <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">$200k+</div>
-              <div className="text-sm text-muted-foreground">Valor Generado</div>
+              <div className="text-sm text-muted-foreground">{language === "es" ? "Valor Generado" : "Value Generated"}</div>
             </div>
             <div className="glass p-6 rounded-lg text-center">
               <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">100k+</div>
-              <div className="text-sm text-muted-foreground">Usuarios Activos</div>
+              <div className="text-sm text-muted-foreground">{language === "es" ? "Usuarios Activos" : "Active Users"}</div>
             </div>
           </div>
         </FadeIn>

@@ -7,8 +7,9 @@ import { StaggerContainer, StaggerItem } from "@/components/animations/StaggerCo
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { skills, getSkillsByCategory } from "@/lib/data/skills";
-import { SKILL_CATEGORIES } from "@/lib/constants";
 import type { Skill } from "@/types";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { getTranslation } from "@/lib/translations";
 
 const categoryColors = {
   frontend: "from-primary to-cyan-400",
@@ -22,6 +23,7 @@ const categoryColors = {
 };
 
 export function Skills() {
+  const { language } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<Skill["category"] | "all">("all");
 
   const filteredSkills =
@@ -51,10 +53,14 @@ export function Skills() {
         <FadeIn>
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Habilidades & <span className="gradient-text">Tecnologías</span>
+              {language === "es" ? (
+                <>Habilidades & <span className="gradient-text">Tecnologías</span></>
+              ) : (
+                <>Skills & <span className="gradient-text">Technologies</span></>
+              )}
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Stack tecnológico completo con dominio en múltiples áreas
+              {getTranslation(language, "skills.subtitle")}
             </p>
           </div>
         </FadeIn>
@@ -74,7 +80,10 @@ export function Skills() {
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {category === "all" ? "Todas" : SKILL_CATEGORIES[category]}
+                {category === "all" 
+                  ? (language === "es" ? "Todas" : "All")
+                  : getTranslation(language, `skills.categories.${category}`)
+                }
               </motion.button>
             ))}
           </div>
@@ -92,14 +101,14 @@ export function Skills() {
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold">{skill.name}</h3>
                     <Badge variant="outline" className="text-xs">
-                      {skill.yearsOfExperience}+ años
+                      {skill.yearsOfExperience}+ {language === "es" ? "años" : "years"}
                     </Badge>
                   </div>
 
                   {/* Progress Bar */}
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>Nivel de dominio</span>
+                      <span>{language === "es" ? "Nivel de dominio" : "Skill Level"}</span>
                       <span className="font-semibold text-foreground">{skill.level}%</span>
                     </div>
                     <div className="h-2 bg-muted rounded-full overflow-hidden">
@@ -116,7 +125,7 @@ export function Skills() {
                   {/* Category Badge */}
                   <div className="mt-4">
                     <Badge variant="outline" className="text-xs">
-                      {SKILL_CATEGORIES[skill.category]}
+                      {getTranslation(language, `skills.categories.${skill.category}`)}
                     </Badge>
                   </div>
                 </Card>
@@ -130,19 +139,19 @@ export function Skills() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16">
             <div className="glass p-6 rounded-lg text-center">
               <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">60+</div>
-              <div className="text-sm text-muted-foreground">Tecnologías</div>
+              <div className="text-sm text-muted-foreground">{language === "es" ? "Tecnologías" : "Technologies"}</div>
             </div>
             <div className="glass p-6 rounded-lg text-center">
               <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">8</div>
-              <div className="text-sm text-muted-foreground">Categorías</div>
+              <div className="text-sm text-muted-foreground">{language === "es" ? "Categorías" : "Categories"}</div>
             </div>
             <div className="glass p-6 rounded-lg text-center">
               <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">90%</div>
-              <div className="text-sm text-muted-foreground">Nivel Promedio</div>
+              <div className="text-sm text-muted-foreground">{language === "es" ? "Nivel Promedio" : "Average Level"}</div>
             </div>
             <div className="glass p-6 rounded-lg text-center">
               <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">14+</div>
-              <div className="text-sm text-muted-foreground">Años Aprendiendo</div>
+              <div className="text-sm text-muted-foreground">{language === "es" ? "Años Aprendiendo" : "Years Learning"}</div>
             </div>
           </div>
         </FadeIn>
@@ -151,7 +160,10 @@ export function Skills() {
         <FadeIn delay={0.6}>
           <div className="mt-16 text-center">
             <p className="text-lg text-muted-foreground mb-6">
-              ¿Buscas un desarrollador versátil y experimentado?
+              {language === "es" 
+                ? "¿Buscas un desarrollador versátil y experimentado?"
+                : "Looking for a versatile and experienced developer?"
+              }
             </p>
             <motion.a
               href="#contact"
@@ -163,7 +175,10 @@ export function Skills() {
                 document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
               }}
             >
-              Conversemos sobre tu proyecto
+              {language === "es" 
+                ? "Conversemos sobre tu proyecto"
+                : "Let's talk about your project"
+              }
             </motion.a>
           </div>
         </FadeIn>

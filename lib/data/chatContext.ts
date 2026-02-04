@@ -363,10 +363,15 @@ export const CV_CONTEXT = {
 };
 
 // Mensajes predefinidos para el chat (actualizados)
-export const SUGGESTED_QUESTIONS = [
-  "💰 Quiero cotizar un proyecto",
-  "📅 Agendar una videollamada",
-  "🤔 ¿Cuál es tu experiencia?",
-  "💬 Tengo una consulta rápida",
-  "📱 ¿Cuánto cuesta una app mobile?",
-];
+export const SUGGESTED_QUESTIONS = {
+  es: [
+    "💰 Quiero cotizar un proyecto",
+    "📅 Agendar una videollamada",
+    "🤔 ¿Cuál es tu experiencia?",
+  ],
+  en: [
+    "💰 I want to quote a project",
+    "📅 Schedule a video call",
+    "🤔 What is your experience?",
+  ],
+};

@@ -6,6 +6,8 @@ import { MessageCircle, X, Send, Loader2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SUGGESTED_QUESTIONS } from "@/lib/data/chatContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { getTranslation } from "@/lib/translations";
 
 interface Message {
   role: "user" | "assistant";
@@ -13,16 +15,36 @@ interface Message {
 }
 
 export function ChatWidget() {
+  const { language } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
+  
+  const getInitialMessage = () => {
+    if (language === "es") {
+      return "¡Hola! 👋 Soy el asistente de Julio Gómez.\n\nPuedo ayudarte a:\n\n📅 Agendar una videollamada\n💰 Cotizar tu proyecto\n💬 Consulta rápida (Julio responde en ~2h)\n🎯 Conocer más sobre sus servicios\n\n¿En qué puedo ayudarte hoy?";
+    } else {
+      return "Hello! 👋 I'm Julio Gómez's assistant.\n\nI can help you with:\n\n📅 Schedule a video call\n💰 Quote your project\n💬 Quick inquiry (Julio responds in ~2h)\n🎯 Learn more about his services\n\nHow can I help you today?";
+    }
+  };
+
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "¡Hola! 👋 Soy el asistente de Julio Gómez.\n\nPuedo ayudarte a:\n\n📅 Agendar una videollamada\n💰 Cotizar tu proyecto\n💬 Consulta rápida (Julio responde en ~2h)\n🎯 Conocer más sobre sus servicios\n\n¿En qué puedo ayudarte hoy?",
+      content: getInitialMessage(),
     },
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Update initial message when language changes
+  useEffect(() => {
+    if (messages.length === 1) {
+      setMessages([{
+        role: "assistant",
+        content: getInitialMessage(),
+      }]);
+    }
+  }, [language]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -47,6 +69,7 @@ export function ChatWidget() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages: [...messages, userMessage],
+          language: language, // Send language to backend
         }),
       });
 
@@ -64,11 +87,14 @@ export function ChatWidget() {
     } catch (error) {
       console.error("Error:", error);
       const err = error as { message?: string };
+      const errorMsg = language === "es" 
+        ? `Lo siento, hubo un error: ${err.message || "desconocido"}. Por favor intenta nuevamente o contacta directamente a Julio.`
+        : `Sorry, there was an error: ${err.message || "unknown"}. Please try again or contact Julio directly.`;
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: `Lo siento, hubo un error: ${err.message || "desconocido"}. Por favor intenta nuevamente o contacta directamente a Julio.`,
+          content: errorMsg,
         },
       ]);
     } finally {
@@ -133,8 +159,8 @@ export function ChatWidget() {
                   <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-background" />
                 </div>
                 <div>
-                  <h3 className="font-semibold">Asistente IA</h3>
-                  <p className="text-xs text-muted-foreground">Pregúntame sobre Julio</p>
+                  <h3 className="font-semibold">{getTranslation(language, "chat.title").split(" ").slice(1).join(" ")}</h3>
+                  <p className="text-xs text-muted-foreground">{getTranslation(language, "chat.subtitle")}</p>
                 </div>
               </div>
               <Button
@@ -183,8 +209,8 @@ export function ChatWidget() {
               {/* Suggested Questions - Only show at start */}
               {messages.length === 1 && (
                 <div className="space-y-2 pt-2">
-                  <p className="text-xs text-muted-foreground text-center">Preguntas sugeridas:</p>
-                  {SUGGESTED_QUESTIONS.slice(0, 3).map((question, index) => (
+                  <p className="text-xs text-muted-foreground text-center">{language === "es" ? "Preguntas sugeridas:" : "Suggested questions:"}</p>
+                  {SUGGESTED_QUESTIONS[language].map((question, index) => (
                     <motion.button
                       key={index}
                       initial={{ opacity: 0, x: -10 }}
@@ -214,7 +240,7 @@ export function ChatWidget() {
                 <Input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Escribe tu pregunta..."
+                  placeholder={getTranslation(language, "chat.placeholder")}
                   disabled={isLoading}
                   className="flex-1 glass border-primary/20"
                 />

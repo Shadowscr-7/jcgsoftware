@@ -7,9 +7,23 @@ import { StaggerContainer, StaggerItem } from "@/components/animations/StaggerCo
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { experiences } from "@/lib/data/experience";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { getTranslation } from "@/lib/translations";
 
 export function Experience() {
+  const { language } = useLanguage();
+
+  // Get experiences from translations (8 positions from 2011 to present)
+  const experiences = Array.from({ length: 8 }, (_, i) => {
+    const expData = getTranslation(language, `experience.positions.${i + 1}`);
+    return {
+      id: String(i + 1),
+      ...expData,
+      current: i === 0,
+      technologies: [] as string[]
+    };
+  });
+
   return (
     <section id="experience" className="py-20 md:py-32 relative overflow-hidden">
       {/* Background Elements */}
@@ -22,10 +36,10 @@ export function Experience() {
         <FadeIn>
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Experiencia <span className="gradient-text">Profesional</span>
+              {getTranslation(language, "experience.title").split(" ")[0]} <span className="gradient-text">{getTranslation(language, "experience.title").split(" ").slice(1).join(" ")}</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Más de una década construyendo soluciones digitales innovadoras
+              {getTranslation(language, "experience.subtitle")}
             </p>
           </div>
         </FadeIn>
@@ -71,7 +85,7 @@ export function Experience() {
                         </div>
                         {exp.current && (
                           <Badge className="bg-gradient-to-r from-primary to-secondary text-background">
-                            Actual
+                            {getTranslation(language, "experience.present")}
                           </Badge>
                         )}
                       </div>
@@ -81,9 +95,9 @@ export function Experience() {
 
                       {/* Achievements */}
                       <div className="mb-4">
-                        <h4 className="text-sm font-semibold mb-2">Logros destacados:</h4>
+                        <h4 className="text-sm font-semibold mb-2">{language === "es" ? "Logros destacados:" : "Key Achievements:"}</h4>
                         <ul className="space-y-2">
-                          {exp.achievements.map((achievement, i) => (
+                          {exp.achievements.map((achievement: string, i: number) => (
                             <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                               <span className="text-primary mt-1">▹</span>
                               <span>{achievement}</span>
@@ -93,16 +107,18 @@ export function Experience() {
                       </div>
 
                       {/* Technologies */}
-                      <div>
-                        <h4 className="text-sm font-semibold mb-2">Tecnologías:</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {exp.technologies.map((tech, i) => (
-                            <Badge key={i} variant="outline" className="text-xs">
-                              {tech}
-                            </Badge>
-                          ))}
+                      {exp.technologies && exp.technologies.length > 0 && (
+                        <div>
+                          <h4 className="text-sm font-semibold mb-2">{language === "es" ? "Tecnologías:" : "Technologies:"}</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {exp.technologies.map((tech: string, i: number) => (
+                              <Badge key={i} variant="outline" className="text-xs">
+                                {tech}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </Card>
                   </div>
 

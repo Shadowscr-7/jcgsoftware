@@ -2,17 +2,30 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Languages } from "lucide-react";
 import Image from "next/image";
-import { NAV_LINKS } from "@/lib/constants";
 import { useScrollPosition } from "@/hooks/useScrollPosition";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { getTranslation } from "@/lib/translations";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { scrollPosition } = useScrollPosition();
   const [activeSection, setActiveSection] = useState("hero");
+  const { language, setLanguage } = useLanguage();
 
   const isScrolled = scrollPosition > 50;
+
+  // Get navigation links from translations
+  const NAV_LINKS = [
+    { href: "#hero", label: getTranslation(language, "nav.home") },
+    { href: "#about", label: getTranslation(language, "nav.about") },
+    { href: "#experience", label: getTranslation(language, "nav.experience") },
+    { href: "#skills", label: getTranslation(language, "nav.skills") },
+    { href: "#portfolio", label: getTranslation(language, "nav.portfolio") },
+    { href: "#services", label: getTranslation(language, "nav.services") },
+    { href: "#contact", label: getTranslation(language, "nav.contact") },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -131,49 +144,110 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* CTA Button Mejorado */}
-          <motion.a
-            href="#contact"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection("#contact");
-            }}
-            className="hidden md:block relative group cursor-pointer"
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <div className="relative">
-              {/* Glow effect */}
-              <div className="absolute inset-0 bg-linear-to-r from-primary to-secondary rounded-lg blur-lg opacity-50 group-hover:opacity-100 transition-opacity" />
-              
-              {/* Button */}
-              <div className="relative px-6 py-2.5 bg-linear-to-r from-primary to-secondary text-background font-semibold rounded-lg overflow-hidden">
-                {/* Shine effect */}
-                <motion.div
-                  className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent"
-                  initial={{ x: "-100%" }}
-                  whileHover={{ x: "100%" }}
-                  transition={{ duration: 0.6 }}
-                />
-                <span className="relative z-10">Contáctame</span>
+          {/* Language Selector & CTA */}
+          <div className="hidden md:flex items-center gap-3">
+            {/* Language Selector */}
+            <motion.div 
+              className="flex items-center glass rounded-lg border border-border/50 overflow-hidden"
+              whileHover={{ scale: 1.02 }}
+            >
+              <button
+                onClick={() => setLanguage("es")}
+                className={`px-3 py-1.5 text-xs font-medium transition-all ${
+                  language === "es"
+                    ? "bg-primary text-background"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                ES
+              </button>
+              <div className="w-px h-4 bg-border/50" />
+              <button
+                onClick={() => setLanguage("en")}
+                className={`px-3 py-1.5 text-xs font-medium transition-all ${
+                  language === "en"
+                    ? "bg-primary text-background"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                EN
+              </button>
+            </motion.div>
+
+            {/* CTA Button */}
+            <motion.a
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("#contact");
+              }}
+              className="relative group cursor-pointer"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <div className="relative">
+                {/* Glow effect */}
+                <div className="absolute inset-0 bg-linear-to-r from-primary to-secondary rounded-lg blur-lg opacity-50 group-hover:opacity-100 transition-opacity" />
+                
+                {/* Button */}
+                <div className="relative px-6 py-2.5 bg-linear-to-r from-primary to-secondary text-background font-semibold rounded-lg overflow-hidden">
+                  {/* Shine effect */}
+                  <motion.div
+                    className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent"
+                    initial={{ x: "-100%" }}
+                    whileHover={{ x: "100%" }}
+                    transition={{ duration: 0.6 }}
+                  />
+                  <span className="relative z-10">{getTranslation(language, "nav.contact")}</span>
+                </div>
               </div>
-            </div>
-          </motion.a>
+            </motion.a>
+          </div>
 
           {/* Mobile Menu Button Mejorado */}
-          <motion.button
-            className="md:hidden p-2 glass rounded-lg border border-border hover:border-primary/50 transition-all"
-            onClick={() => setIsOpen(!isOpen)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <motion.div
-              animate={{ rotate: isOpen ? 180 : 0 }}
-              transition={{ duration: 0.3 }}
+          <div className="md:hidden flex items-center gap-2">
+            {/* Mobile Language Selector */}
+            <motion.div 
+              className="flex items-center glass rounded-lg border border-border/50 overflow-hidden"
+              whileHover={{ scale: 1.02 }}
             >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+              <button
+                onClick={() => setLanguage("es")}
+                className={`px-2 py-1 text-xs font-medium transition-all ${
+                  language === "es"
+                    ? "bg-primary text-background"
+                    : "text-muted-foreground"
+                }`}
+              >
+                ES
+              </button>
+              <div className="w-px h-3 bg-border/50" />
+              <button
+                onClick={() => setLanguage("en")}
+                className={`px-2 py-1 text-xs font-medium transition-all ${
+                  language === "en"
+                    ? "bg-primary text-background"
+                    : "text-muted-foreground"
+                }`}
+              >
+                EN
+              </button>
             </motion.div>
-          </motion.button>
+
+            <motion.button
+              className="p-2 glass rounded-lg border border-border hover:border-primary/50 transition-all"
+              onClick={() => setIsOpen(!isOpen)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <motion.div
+                animate={{ rotate: isOpen ? 180 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {isOpen ? <X size={24} /> : <Menu size={24} />}
+              </motion.div>
+            </motion.button>
+          </div>
         </div>
       </div>
 
@@ -211,7 +285,7 @@ export function Navbar() {
               }}
               className="block px-4 py-3 bg-linear-to-r from-primary to-secondary text-center text-background font-semibold rounded-lg cursor-pointer"
             >
-              Contáctame
+              {getTranslation(language, "nav.contact")}
             </a>
           </div>
         </motion.div>

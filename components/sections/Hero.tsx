@@ -5,8 +5,12 @@ import Image from "next/image";
 import { ArrowDown, Github, Linkedin, Mail, FileText } from "lucide-react";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { getTranslation } from "@/lib/translations";
 
 export function Hero() {
+  const { language } = useLanguage();
+  
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
@@ -58,26 +62,26 @@ export function Hero() {
             <motion.h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6">
               <span className="text-foreground">Julio Gómez</span>
               <br />
-              <span className="gradient-text">Full Stack Developer</span>
+              <span className="gradient-text">{getTranslation(language, "hero.role")}</span>
             </motion.h1>
           </FadeIn>
 
           <FadeIn delay={0.6}>
             <p className="text-xl md:text-2xl text-muted-foreground mb-4">
-              34 años • 14+ años transformando ideas en realidad digital
+              {getTranslation(language, "hero.description")}
             </p>
           </FadeIn>
 
           <FadeIn delay={0.8}>
             <div className="flex flex-wrap justify-center gap-3 mb-8">
               <span className="px-4 py-2 glass rounded-full text-sm font-medium border border-primary/30 text-primary">
-                Web & Mobile
+                {getTranslation(language, "hero.badge1")}
               </span>
               <span className="px-4 py-2 glass rounded-full text-sm font-medium border border-secondary/30 text-secondary">
-                IA & Automatización
+                {getTranslation(language, "hero.badge2")}
               </span>
               <span className="px-4 py-2 glass rounded-full text-sm font-medium border border-accent/30 text-accent">
-                Marketing Digital
+                {getTranslation(language, "hero.badge3")}
               </span>
             </div>
           </FadeIn>
@@ -89,7 +93,7 @@ export function Hero() {
                 className="bg-gradient-to-r from-primary to-secondary hover:shadow-lg hover:shadow-primary/50 transition-all"
                 onClick={() => scrollToSection("#portfolio")}
               >
-                Ver Proyectos
+                {getTranslation(language, "hero.cta1")}
               </Button>
               <Button
                 size="lg"
@@ -97,7 +101,7 @@ export function Hero() {
                 className="border-primary/50 hover:bg-primary/10"
                 onClick={() => scrollToSection("#contact")}
               >
-                Contáctame
+                {getTranslation(language, "hero.cta2")}
               </Button>
             </div>
           </FadeIn>
