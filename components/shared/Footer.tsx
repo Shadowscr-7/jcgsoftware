@@ -44,27 +44,6 @@ export function Footer() {
               <p className="text-sm text-muted-foreground">
                 {getTranslation(language, "footer.description")}
               </p>
-              <div className="flex gap-4">
-                {[
-                  { icon: "github", href: "https://github.com/tuusuario" },
-                  { icon: "linkedin", href: "https://linkedin.com/in/tuusuario" },
-                  { icon: "twitter", href: "https://twitter.com/tuusuario" },
-                ].map((social, index) => (
-                  <motion.a
-                    key={index}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 glass rounded-full flex items-center justify-center hover:border-primary/50 transition-all text-sm"
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {social.icon === "github" && "GH"}
-                    {social.icon === "linkedin" && "LI"}
-                    {social.icon === "twitter" && "TW"}
-                  </motion.a>
-                ))}
-              </div>
             </div>
 
             {/* Quick Links */}
