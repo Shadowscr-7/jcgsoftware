@@ -44,7 +44,7 @@ export function Portfolio() {
         <FadeIn>
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              {getTranslation(language, "portfolio.title").split(" ")[0]} & <span className="gradient-text">{getTranslation(language, "portfolio.title").split(" ").slice(1).join(" ")}</span>
+              <span className="gradient-text">{getTranslation(language, "portfolio.title")}</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               {getTranslation(language, "portfolio.subtitle")}
