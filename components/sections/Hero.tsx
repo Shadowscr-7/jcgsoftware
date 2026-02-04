@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { ArrowDown, Github, Linkedin, Mail, FileText } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -103,49 +103,6 @@ export function Hero() {
               >
                 {getTranslation(language, "hero.cta2")}
               </Button>
-            </div>
-          </FadeIn>
-
-          <FadeIn delay={1.2}>
-            <div className="flex justify-center gap-4">
-              <motion.a
-                href="https://github.com/tuusuario"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-12 h-12 glass rounded-full flex items-center justify-center hover:border-primary/50 transition-colors"
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Github className="w-5 h-5" />
-              </motion.a>
-              <motion.a
-                href="https://linkedin.com/in/tuusuario"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-12 h-12 glass rounded-full flex items-center justify-center hover:border-primary/50 transition-colors"
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Linkedin className="w-5 h-5" />
-              </motion.a>
-              <motion.a
-                href="mailto:tuemail@ejemplo.com"
-                className="w-12 h-12 glass rounded-full flex items-center justify-center hover:border-primary/50 transition-colors"
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Mail className="w-5 h-5" />
-              </motion.a>
-              <motion.a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-12 h-12 glass rounded-full flex items-center justify-center hover:border-primary/50 transition-colors"
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <FileText className="w-5 h-5" />
-              </motion.a>
             </div>
           </FadeIn>
         </div>
