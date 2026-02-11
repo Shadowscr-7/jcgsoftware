@@ -1,4 +1,4 @@
-# API route for human takeover
+// API route for human takeover
 import { NextRequest, NextResponse } from "next/server";
 import { getSession, addMessage, TelegramBot } from "@/lib/telegram";
 

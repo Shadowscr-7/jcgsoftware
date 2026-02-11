@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "setup-telegram": "node scripts/setup-telegram-webhook.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
