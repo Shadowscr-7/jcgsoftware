@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, Github, X } from "lucide-react";
+import Image from "next/image";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { StaggerContainer, StaggerItem } from "@/components/animations/StaggerContainer";
 import { Card } from "@/components/ui/card";
@@ -100,17 +101,26 @@ export function Portfolio() {
                 >
                   {/* Project Image */}
                   <div className="relative h-48 bg-gradient-to-br from-primary/20 to-secondary/20 overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-6xl opacity-50">
-                        {project.category === "web" && "🌐"}
-                        {project.category === "mobile" && "📱"}
-                        {project.category === "ai" && "🤖"}
-                        {project.category === "automation" && "⚡"}
-                        {project.category === "marketing" && "📊"}
+                    {project.image && !project.image.includes('placeholder') ? (
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-6xl opacity-50">
+                          {project.category === "web" && "🌐"}
+                          {project.category === "mobile" && "📱"}
+                          {project.category === "ai" && "🤖"}
+                          {project.category === "automation" && "⚡"}
+                          {project.category === "marketing" && "📊"}
+                        </div>
                       </div>
-                    </div>
+                    )}
                     {project.featured && (
-                      <Badge className="absolute top-4 right-4 bg-gradient-to-r from-primary to-secondary text-background">
+                      <Badge className="absolute top-4 right-4 bg-gradient-to-r from-primary to-secondary text-background z-10">
                         {language === "es" ? "Destacado" : "Featured"}
                       </Badge>
                     )}
@@ -224,15 +234,26 @@ export function Portfolio() {
                 </div>
 
                 <div className="p-6 space-y-6">
-                  {/* Image Placeholder */}
-                  <div className="h-64 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg flex items-center justify-center">
-                    <div className="text-8xl opacity-50">
-                      {selectedProject.category === "web" && "🌐"}
-                      {selectedProject.category === "mobile" && "📱"}
-                      {selectedProject.category === "ai" && "🤖"}
-                      {selectedProject.category === "automation" && "⚡"}
-                      {selectedProject.category === "marketing" && "📊"}
-                    </div>
+                  {/* Project Image */}
+                  <div className="relative h-64 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg overflow-hidden">
+                    {selectedProject.image && !selectedProject.image.includes('placeholder') ? (
+                      <Image
+                        src={selectedProject.image}
+                        alt={selectedProject.title}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-8xl opacity-50">
+                          {selectedProject.category === "web" && "🌐"}
+                          {selectedProject.category === "mobile" && "📱"}
+                          {selectedProject.category === "ai" && "🤖"}
+                          {selectedProject.category === "automation" && "⚡"}
+                          {selectedProject.category === "marketing" && "📊"}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Description */}

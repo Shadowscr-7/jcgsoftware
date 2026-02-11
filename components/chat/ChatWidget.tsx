@@ -17,6 +17,7 @@ interface Message {
 export function ChatWidget() {
   const { language } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
   
   const getInitialMessage = () => {
     if (language === "es") {
@@ -70,6 +71,7 @@ export function ChatWidget() {
         body: JSON.stringify({
           messages: [...messages, userMessage],
           language: language, // Send language to backend
+          sessionId: sessionId, // Include session ID
         }),
       });
 
@@ -77,6 +79,11 @@ export function ChatWidget() {
 
       if (!response.ok) {
         throw new Error(data.error || "Error al enviar mensaje");
+      }
+
+      // Store session ID if it's a new session
+      if (data.sessionId && !sessionId) {
+        setSessionId(data.sessionId);
       }
 
       const assistantMessage: Message = {

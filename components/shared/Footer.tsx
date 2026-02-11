@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Heart, ArrowUp } from "lucide-react";
+import Image from "next/image";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getTranslation } from "@/lib/translations";
 
@@ -40,7 +41,13 @@ export function Footer() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Brand */}
             <div className="space-y-4">
-              <h3 className="text-2xl font-bold gradient-text">{getTranslation(language, "footer.brand")}</h3>
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                width={140}
+                height={140}
+                className="w-35 h-auto"
+              />
               <p className="text-sm text-muted-foreground">
                 {getTranslation(language, "footer.description")}
               </p>
@@ -85,13 +92,13 @@ export function Footer() {
               <h4 className="font-semibold mb-4">{getTranslation(language, "footer.contact")}</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <a href="mailto:tuemail@ejemplo.com" className="hover:text-primary transition-colors">
-                    tuemail@ejemplo.com
+                  <a href="mailto:jcg.software.solution@gmail.com" className="hover:text-primary transition-colors">
+                    jcg.software.solution@gmail.com
                   </a>
                 </li>
                 <li>
-                  <a href="tel:+1234567890" className="hover:text-primary transition-colors">
-                    +1 (234) 567-890
+                  <a href="tel:+59897479212" className="hover:text-primary transition-colors">
+                    +598 97479212
                   </a>
                 </li>
                 <li>Remote / Worldwide</li>
