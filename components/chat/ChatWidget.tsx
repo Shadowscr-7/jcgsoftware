@@ -20,6 +20,7 @@ export function ChatWidget() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [isHumanControlled, setIsHumanControlled] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [lastMessageIndex, setLastMessageIndex] = useState(0);
   
   const getInitialMessage = () => {
     if (language === "es") {
@@ -66,11 +67,18 @@ export function ChatWidget() {
     const pollForMessages = async () => {
       try {
         const response = await fetch(
-          `/api/chat/messages?sessionId=${sessionId}&lastMessageIndex=${messages.length}`
+          `/api/chat/messages?sessionId=${sessionId}&lastMessageIndex=${lastMessageIndex}`
         );
         
         if (response.ok) {
           const data = await response.json();
+          
+          console.log("Polling data:", {
+            newMessages: data.messages.length,
+            totalMessages: data.totalMessages,
+            isHumanControlled: data.isHumanControlled,
+            currentLastIndex: lastMessageIndex
+          });
           
           // Update human control status
           if (data.isHumanControlled !== isHumanControlled) {
@@ -83,8 +91,15 @@ export function ChatWidget() {
             }
           }
           
+          // Show typing when human has control and no new messages yet
+          if (data.isHumanControlled && data.messages.length === 0) {
+            // Keep typing indicator alive
+            setIsTyping(true);
+          }
+          
           // Add new messages
           if (data.messages && data.messages.length > 0) {
+            console.log("Adding new messages:", data.messages);
             setIsTyping(false);
             setMessages(prev => [
               ...prev,
@@ -93,6 +108,9 @@ export function ChatWidget() {
                 content: msg.content,
               }))
             ]);
+            
+            // Update lastMessageIndex to the total messages in the session
+            setLastMessageIndex(data.totalMessages);
           }
         }
       } catch (error) {
@@ -106,7 +124,7 @@ export function ChatWidget() {
     return () => {
       if (pollInterval) clearInterval(pollInterval);
     };
-  }, [sessionId, isOpen, messages.length, isHumanControlled]);
+  }, [sessionId, isOpen, lastMessageIndex, isHumanControlled]);
 
   const sendMessage = async (messageText?: string) => {
     const textToSend = messageText || input.trim();
@@ -151,6 +169,9 @@ export function ChatWidget() {
         content: data.message,
       };
       setMessages((prev) => [...prev, assistantMessage]);
+      
+      // Update lastMessageIndex (user message + assistant response = +2)
+      setLastMessageIndex(prev => prev + 2);
     } catch (error) {
       console.error("Error:", error);
       const err = error as { message?: string };

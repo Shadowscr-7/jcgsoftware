@@ -86,6 +86,9 @@ export async function POST(request: NextRequest) {
           // Add human message to the session
           addMessage(activeSessionId, "human", text);
           
+          console.log(`[Telegram] Message sent to session ${activeSessionId}:`, text);
+          console.log(`[Telegram] Session now has ${session.messages.length} messages`);
+          
           // Confirm message was sent
           await bot.sendMessage({
             chat_id: chatId,

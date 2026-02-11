@@ -31,6 +31,8 @@ export async function GET(request: NextRequest) {
       isHuman: msg.role === "human",
     }));
 
+    console.log(`[Messages API] Session ${sessionId}: ${session.messages.length} total messages, returning ${newMessages.length} new messages from index ${lastMessageIndex}`);
+
     return NextResponse.json({
       sessionId,
       messages: newMessages,
