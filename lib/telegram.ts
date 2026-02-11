@@ -26,6 +26,9 @@ interface ConversationSession {
 // Store active conversations (in production, use Redis or database)
 const activeSessions = new Map<string, ConversationSession>();
 
+// Store the currently controlled session (for Telegram message routing)
+let activeControlledSession: string | null = null;
+
 export class TelegramBot {
   private botToken: string;
   private chatId: string;
@@ -278,6 +281,7 @@ export function takeControl(sessionId: string): boolean {
   const session = activeSessions.get(sessionId);
   if (session) {
     session.isHumanControlled = true;
+    activeControlledSession = sessionId; // Set as active controlled session
     return true;
   }
   return false;
@@ -287,9 +291,26 @@ export function releaseControl(sessionId: string): boolean {
   const session = activeSessions.get(sessionId);
   if (session) {
     session.isHumanControlled = false;
+    if (activeControlledSession === sessionId) {
+      activeControlledSession = null; // Clear active controlled session
+    }
     return true;
   }
   return false;
+}
+
+export function getActiveControlledSession(): string | null {
+  return activeControlledSession;
+}
+
+export function getAllControlledSessions(): string[] {
+  const controlled: string[] = [];
+  activeSessions.forEach((session, sessionId) => {
+    if (session.isHumanControlled) {
+      controlled.push(sessionId);
+    }
+  });
+  return controlled;
 }
 
 export function endSession(sessionId: string) {

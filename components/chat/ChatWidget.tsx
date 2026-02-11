@@ -18,6 +18,8 @@ export function ChatWidget() {
   const { language } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
+  const [isHumanControlled, setIsHumanControlled] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   
   const getInitialMessage = () => {
     if (language === "es") {
@@ -55,6 +57,57 @@ export function ChatWidget() {
     scrollToBottom();
   }, [messages]);
 
+  // Polling for new messages when human is in control
+  useEffect(() => {
+    if (!sessionId || !isOpen) return;
+
+    let pollInterval: NodeJS.Timeout;
+    
+    const pollForMessages = async () => {
+      try {
+        const response = await fetch(
+          `/api/chat/messages?sessionId=${sessionId}&lastMessageIndex=${messages.length}`
+        );
+        
+        if (response.ok) {
+          const data = await response.json();
+          
+          // Update human control status
+          if (data.isHumanControlled !== isHumanControlled) {
+            setIsHumanControlled(data.isHumanControlled);
+            
+            // Show typing indicator when human takes control
+            if (data.isHumanControlled && !isHumanControlled) {
+              setIsTyping(true);
+              setTimeout(() => setIsTyping(false), 2000);
+            }
+          }
+          
+          // Add new messages
+          if (data.messages && data.messages.length > 0) {
+            setIsTyping(false);
+            setMessages(prev => [
+              ...prev,
+              ...data.messages.map((msg: any) => ({
+                role: msg.role,
+                content: msg.content,
+              }))
+            ]);
+          }
+        }
+      } catch (error) {
+        console.error("Error polling messages:", error);
+      }
+    };
+
+    // Poll every 2 seconds when chat is open
+    pollInterval = setInterval(pollForMessages, 2000);
+
+    return () => {
+      if (pollInterval) clearInterval(pollInterval);
+    };
+  }, [sessionId, isOpen, messages.length, isHumanControlled]);
+
   const sendMessage = async (messageText?: string) => {
     const textToSend = messageText || input.trim();
     if (!textToSend || isLoading) return;
@@ -84,6 +137,13 @@ export function ChatWidget() {
       // Store session ID if it's a new session
       if (data.sessionId && !sessionId) {
         setSessionId(data.sessionId);
+      }
+
+      // Check if human took control
+      if (data.humanControlled) {
+        setIsHumanControlled(true);
+        setIsTyping(true);
+        setTimeout(() => setIsTyping(false), 3000);
       }
 
       const assistantMessage: Message = {
@@ -163,11 +223,23 @@ export function ChatWidget() {
                   <div className="w-10 h-10 rounded-full bg-linear-to-r from-primary to-secondary flex items-center justify-center">
                     <Sparkles className="h-5 w-5" />
                   </div>
-                  <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-background" />
+                  <div className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-background ${
+                    isHumanControlled ? 'bg-accent' : 'bg-green-500'
+                  }`} />
                 </div>
                 <div>
-                  <h3 className="font-semibold">{getTranslation(language, "chat.title").split(" ").slice(1).join(" ")}</h3>
-                  <p className="text-xs text-muted-foreground">{getTranslation(language, "chat.subtitle")}</p>
+                  <h3 className="font-semibold">
+                    {isHumanControlled 
+                      ? (language === "es" ? "Julio Gómez" : "Julio Gómez")
+                      : getTranslation(language, "chat.title").split(" ").slice(1).join(" ")
+                    }
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    {isHumanControlled
+                      ? (language === "es" ? "🟢 Conectado" : "🟢 Connected")
+                      : getTranslation(language, "chat.subtitle")
+                    }
+                  </p>
                 </div>
               </div>
               <Button
@@ -209,6 +281,41 @@ export function ChatWidget() {
                 >
                   <div className="glass border border-primary/10 p-3 rounded-2xl">
                     <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Typing indicator when human is typing */}
+              {isTyping && !isLoading && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex justify-start"
+                >
+                  <div className="glass border border-primary/10 p-3 rounded-2xl flex items-center gap-2">
+                    <span className="text-xs text-muted-foreground">
+                      {isHumanControlled 
+                        ? (language === "es" ? "Julio está escribiendo" : "Julio is typing")
+                        : (language === "es" ? "Escribiendo" : "Typing")
+                      }
+                    </span>
+                    <div className="flex gap-1">
+                      <motion.div
+                        className="w-2 h-2 bg-primary rounded-full"
+                        animate={{ scale: [1, 1.3, 1] }}
+                        transition={{ repeat: Infinity, duration: 0.6, delay: 0 }}
+                      />
+                      <motion.div
+                        className="w-2 h-2 bg-primary rounded-full"
+                        animate={{ scale: [1, 1.3, 1] }}
+                        transition={{ repeat: Infinity, duration: 0.6, delay: 0.2 }}
+                      />
+                      <motion.div
+                        className="w-2 h-2 bg-primary rounded-full"
+                        animate={{ scale: [1, 1.3, 1] }}
+                        transition={{ repeat: Infinity, duration: 0.6, delay: 0.4 }}
+                      />
+                    </div>
                   </div>
                 </motion.div>
               )}
